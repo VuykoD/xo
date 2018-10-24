@@ -202,7 +202,19 @@ class App extends Component {
   }
 
   reload(){
-    window.location.reload()
+    this.cells=[];
+    // for (let i=0;i<9;i++){
+    // }
+    this.gameContinue=true;
+    this.twoOfThree=false;
+    this.setState ({
+      userSign:"X",
+      compSign:"O",
+      firstStep:"you",
+      level:localStorage.getItem('level') || "easy",
+      yourWin:localStorage.getItem('yourWin') || 0,
+      compWin:localStorage.getItem('compWin') || 0
+    });
   }
 
   render() {
