@@ -202,8 +202,10 @@ class App extends Component {
   }
 
   reload(){
-    this.cells[]=[];
-
+    this.cells=[];
+    for (let i=0;i<9;i++){
+      this.cells[i]=null;
+    }
     this.gameContinue=true;
     this.twoOfThree=false;
     this.setState ({
