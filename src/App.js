@@ -202,9 +202,8 @@ class App extends Component {
   }
 
   reload(){
-    this.cells=[];
-    // for (let i=0;i<9;i++){
-    // }
+    this.cells[]=[];
+
     this.gameContinue=true;
     this.twoOfThree=false;
     this.setState ({
@@ -221,7 +220,6 @@ class App extends Component {
     return (
       <center >
       <div className="container">
-        
           <span>Score</span><br/>
           <span>You  {this.state.yourWin} - {this.state.compWin} comp</span><br/>
           <button onClick={this.reload} className="btn btn-info" style={{width:"250px"}}>Restart</button><br/>
