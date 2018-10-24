@@ -197,16 +197,13 @@ class App extends Component {
       > 
         {(this.cells[numberCell]==="user") && this.state.userSign}
         {(this.cells[numberCell]==="comp") && this.state.compSign}
-        {(this.cells[numberCell]==='') && ''}
+        {(this.cells[numberCell]===null) && ' '}
       </td>
       )
   }
 
   reload(){
     this.cells=[];
-    for (let i=0;i<9;i++){
-      this.cells[i]='';
-    }
     this.gameContinue=true;
     this.twoOfThree=false;
     this.setState ({
