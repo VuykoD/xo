@@ -5,6 +5,7 @@ class App extends Component {
 
   constructor(props, ctx) {
     super(props, ctx);
+    this.cells=[];
     this.gameContinue=true;
     this.twoOfThree=false;
     this.state = {
@@ -202,6 +203,7 @@ class App extends Component {
   }
 
   reload(){
+    this.cells=[];
     for (let i=0;i<9;i++){
       this.cells[i]='';
     }
