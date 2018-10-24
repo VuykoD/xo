@@ -204,7 +204,7 @@ class App extends Component {
   reload(){
     this.cells=[];
     for (let i=0;i<9;i++){
-      this.cells[i]=null;
+      this.cells[i]='';
     }
     this.gameContinue=true;
     this.twoOfThree=false;
