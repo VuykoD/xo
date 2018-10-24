@@ -81,6 +81,7 @@ class App extends Component {
         this.twoOfThree=false;
         this.block=false;
         this.analize();
+        this.compMove=true;
         if (!this.twoOfThree) {
           this.hardCompMove(4);
           this.hardCompMove(0,8);
@@ -93,7 +94,8 @@ class App extends Component {
   }
 
   hardCompMove(x1,x2,x3){
-    if (!this.cells[x1] && !this.cells[x2] && !this.cells[x3]) {
+    if (this.compMove && !this.cells[x1] && !this.cells[x2] && !this.cells[x3]) {
+      this.compMove=false;
       return this.cells[x1] = "comp"
     }
   }
