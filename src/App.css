@@ -42,4 +42,9 @@ table {
     margin:20px;
 }
 
-.btn {margin: 3px; width: 100%;height: 45px;}
+.btn, .btn45 {margin: 3px; width: 100%;height: 45px;}
+
+@media (max-width: 767px) {
+  .btn {width: 30%;}
+  .btn45 {width: 45%;}
+}

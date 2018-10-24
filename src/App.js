@@ -1,24 +1,38 @@
 import React, { Component } from 'react';
+import LevelButton from './LevelButton'
 import './App.css';
 
-class App extends Component {
+export default class App extends Component {
   constructor (props, ctx) {
     super(props, ctx);
-    this.cells = [];
-    this.gameContinue = true;
-    this.twoOfThree = false;
+    this.gameInit();
+    this.level = localStorage.getItem('level') || 'easy';
     this.state = {
       userSign: 'X',
       compSign: 'O',
       firstStep: 'you',
-      level:localStorage.getItem('level') || 'easy',
-      yourWin:localStorage.getItem('yourWin') || 0,
-      compWin:localStorage.getItem('compWin') || 0,
+      yourWin: localStorage.getItem('yourWin') || 0,
+      compWin: localStorage.getItem('compWin') || 0,
     };
+    this.restart = this.restart.bind(this);
     this.changeFirstStep = this.changeFirstStep.bind(this);
+    this.changeLevel = this.changeLevel.bind(this);
+  }
+
+  changeLevel(level) {
+    this.level = level;
+    localStorage.setItem('level', level);
+    this.restart();
+  }
+
+  gameInit() {
+    this.cells = [];
+    this.gameContinue = true;
+    this.gameStarted = false;
   }
 
   userMove(x) {
+    this.gameStarted = true;
     if (!this.cells[x] && this.gameContinue) {
       this.cells[x] = 'user';
       this.checkWin();
@@ -52,23 +66,24 @@ class App extends Component {
     }
   }
 
-  signal(winer){
+  signal(winer) {
     if (this.cells[winer] === 'user') {
       localStorage.setItem('yourWin', +this.state.yourWin + 1);
       this.setState({
         yourWin: +this.state.yourWin + 1,
-      }, () => alert("yoy've win"));
+      }, () => setTimeout(()=>alert("yoy've win"),100));
     } else if (this.cells[winer] === 'comp') {
       localStorage.setItem('compWin', +this.state.compWin + 1);
       this.setState({
         compWin: +this.state.compWin + 1,
-      }, () => alert("yoy've lost"));
+      }, () => setTimeout(()=>alert("yoy've lost"),100));
     }
     this.gameContinue = false;
   }
 
-  computerMove () {
-    switch (this.state.level) {
+  computerMove() {
+    this.gameStarted = true;
+    switch (this.level) {
       case 'easy':
         this.randomCell();
         break;
@@ -91,6 +106,9 @@ class App extends Component {
           this.hardCompMove(3, 5);
           this.hardCompMove(1, 7);
         }
+        break;
+      default:
+        break;
     }
   }
 
@@ -158,36 +176,22 @@ class App extends Component {
     });
   }
 
-  changeFirstStep () {
+  changeFirstStep() {
     if (this.state.firstStep === 'you') {
       this.setState({
         firstStep: 'comp',
       });
-      this.computerMove();
+      if (!this.gameStarted) {this.computerMove();}
+    } else {
+      this.setState({
+        firstStep: 'you',
+      });
     }
   }
 
-  buttons(level) {
-    let name = 'btn';
-    if (level === this.state.level) { name = 'btn btn-danger'}
-    return (
-      <button
-        className={name}
-        onClick={() => this.changeLevel(level)}
-      >
-        {level}
-      </button>
-    );
-  }
+    // if (level === this.level) { name = 'btn btn-danger'}
 
-  changeLevel (level) {
-    this.setState({
-      level,
-    });
-    localStorage.setItem('level', level);
-  }
-
-  cell (numberCell) {
+  cell(numberCell) {
     let name = 'borderRight';
     if (numberCell === 2 || numberCell === 5 || numberCell === 8) { name = null }
 
@@ -202,18 +206,12 @@ class App extends Component {
     );
   }
 
-  reload() {
-    this.cells = [];
-    this.gameContinue = true;
-    this.twoOfThree = false;
-    this.setState({
-      userSign: 'X',
-      compSign: 'O',
-      firstStep: 'you',
-      level:localStorage.getItem('level') || 'easy',
-      yourWin:localStorage.getItem('yourWin') || 0,
-      compWin:localStorage.getItem('compWin') || 0,
-    });
+  restart() {
+    this.gameInit();
+    this.forceUpdate();
+    if (this.state.firstStep === 'comp'){
+      this.computerMove();
+    }
   }
 
   render() {
@@ -223,13 +221,13 @@ class App extends Component {
           <span>Score</span>
           <br />
           <span>
-            You {this.state.yourWin}- {this.state.compWin} comp
+            You {this.state.yourWin} - {this.state.compWin} comp
           </span>
           <br />
           <button
-            onClick={this.reload}
+            onClick={this.restart}
             className="btn btn-info"
-            style={{ width: '250px' }}
+            style={{ width: '200px' }}
           >
             Restart
           </button>
@@ -239,12 +237,21 @@ class App extends Component {
             <div className="col-md-3">
               <span>Level</span>
               <br />
-              {this.buttons('easy')}
-              <br />
-              {this.buttons('middle')}
-              <br />
-              {this.buttons('hard')}
-              <br />
+              <LevelButton
+                activeLevel={this.level}
+                changeLevel={this.changeLevel}
+                level='easy'
+              />
+              <LevelButton
+                activeLevel={this.level}
+                changeLevel={this.changeLevel}
+                level='middle'
+              />
+              <LevelButton
+                activeLevel={this.level}
+                changeLevel={this.changeLevel}
+                level='hard'
+              />
             </div>
             <div className="col">
               <table>
@@ -280,14 +287,13 @@ class App extends Component {
               <span>Change sign</span>
               <br />
               <button
-                className="btn"
+                className="btn btn45"
                 onClick={() => this.changeUserSing()}
               >
                 You - {this.state.userSign}
               </button>
-              <br />
               <button
-                className="btn"
+                className="btn btn45"
                 onClick={() => this.changeUserSing()}
               >
                 Computer - {this.state.compSign}
@@ -300,5 +306,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
