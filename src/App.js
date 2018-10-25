@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LevelButton from './LevelButton'
+import LevelButtons from './LevelButton'
 import './App.css';
 
 export default class App extends Component {
@@ -22,7 +22,7 @@ export default class App extends Component {
   changeLevel(level) {
     this.level = level;
     localStorage.setItem('level', level);
-    this.restart();
+    //this.restart();
   }
 
   gameInit() {
@@ -235,22 +235,8 @@ export default class App extends Component {
           <div className="row">
             <div className="col-md-1" />
             <div className="col-md-3">
-              <span>Level</span>
-              <br />
-              <LevelButton
-                activeLevel={this.level}
-                changeLevel={this.changeLevel}
-                level='easy'
-              />
-              <LevelButton
-                activeLevel={this.level}
-                changeLevel={this.changeLevel}
-                level='middle'
-              />
-              <LevelButton
-                activeLevel={this.level}
-                changeLevel={this.changeLevel}
-                level='hard'
+              <LevelButtons
+                click={this.changeLevel}
               />
             </div>
             <div className="col">
