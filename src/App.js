@@ -6,7 +6,7 @@ export default class App extends Component {
   constructor (props, ctx) {
     super(props, ctx);
     this.gameInit();
-    this.level = localStorage.getItem('level') || 'easy';
+    this.level = 'easy';
     this.state = {
       userSign: 'X',
       compSign: 'O',
@@ -40,9 +40,14 @@ export default class App extends Component {
       if (this.gameContinue) {
         this.computerMove();
         this.checkWin();
+
       }
-      this.forceUpdate();
+      for ( let i = 0; i <= 8; i++ ) {
+        if ( !this.cells[i] ) break;
+        if ( i===8 && this.gameContinue ) setTimeout(()=>alert("It's a draw"),100);
+      }
     }
+    this.forceUpdate();  
   }
 
   checkWin() {
@@ -85,7 +90,7 @@ export default class App extends Component {
     this.gameStarted = true;
     switch (this.level) {
       case 'easy':
-        this.randomCell();
+        this.randomCell()
         break;
       case 'middle':
         this.twoOfThree = false;
@@ -105,6 +110,7 @@ export default class App extends Component {
           this.hardCompMove(6, 2, 3);
           this.hardCompMove(3, 5);
           this.hardCompMove(1, 7);
+          if (this.compMove)  {this.randomCell()}
         }
         break;
       default:
